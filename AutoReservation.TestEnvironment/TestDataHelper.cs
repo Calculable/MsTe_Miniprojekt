@@ -39,10 +39,10 @@ namespace AutoReservation.TestEnvironment
             };
 
             Kunde[] kunden = {
-                new Kunde {Nachname = "Nass", Vorname = "Anna", Geburtsdatum = new DateTime(1981, 05, 05)},
-                new Kunde {Nachname = "Beil", Vorname = "Timo", Geburtsdatum = new DateTime(1980, 09, 09)},
-                new Kunde {Nachname = "Pfahl", Vorname = "Martha", Geburtsdatum = new DateTime(1990, 07, 03)},
-                new Kunde {Nachname = "Zufall", Vorname = "Rainer", Geburtsdatum = new DateTime(1954, 11, 11)},
+                new Kunde {Name = "Nass", Vorname = "Anna", Geburtsdatum = new DateTime(1981, 05, 05)},
+                new Kunde {Name = "Beil", Vorname = "Timo", Geburtsdatum = new DateTime(1980, 09, 09)},
+                new Kunde {Name = "Pfahl", Vorname = "Martha", Geburtsdatum = new DateTime(1990, 07, 03)},
+                new Kunde {Name = "Zufall", Vorname = "Rainer", Geburtsdatum = new DateTime(1954, 11, 11)},
             };
 
             int year = DateTime.Now.Year + 1;

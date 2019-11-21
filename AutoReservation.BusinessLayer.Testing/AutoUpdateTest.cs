@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoReservation.Dal;
 using AutoReservation.TestEnvironment;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace AutoReservation.BusinessLayer.Testing
@@ -18,10 +20,13 @@ namespace AutoReservation.BusinessLayer.Testing
         [Fact]
         public async Task UpdateAutoTest()
         {
-            throw new NotImplementedException("Test not implemented.");
             // arrange
             // act
             // assert
+            using(AutoReservationContext context = new AutoReservationContext())
+            {
+            }
+
         }
     }
 }
