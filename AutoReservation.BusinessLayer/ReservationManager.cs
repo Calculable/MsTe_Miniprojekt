@@ -115,7 +115,7 @@ namespace AutoReservation.BusinessLayer
                    .Include(reservation => reservation.Auto)
                    .Where(reservation => reservation.AutoId == currentReservation.AutoId)
                    .Where(reservation => reservation.ReservationsNr != currentReservation.ReservationsNr)
-                   .Where(reservation => (reservation.Von > currentReservation.Von && reservation.Von < currentReservation.Bis) || (reservation.Bis > currentReservation.Von && reservation.Bis < currentReservation.Bis))
+                   .Where(reservation => (reservation.Von > currentReservation.Von && reservation.Von < currentReservation.Bis) || (reservation.Bis > currentReservation.Von && reservation.Bis < currentReservation.Bis) || (reservation.Von == currentReservation.Von))
                    .Count();
 
                     if (amountOfOverlappingReservations > 0)
