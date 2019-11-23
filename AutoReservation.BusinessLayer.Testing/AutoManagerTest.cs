@@ -155,27 +155,5 @@ namespace AutoReservation.BusinessLayer.Testing
             var ex = Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.update(inserted2));
         }
 
-
-        /*            Auto[] autos = {
-                new StandardAuto {Marke = "Fiat Punto", Tagestarif = 50},
-                new MittelklasseAuto {Marke = "VW Golf", Tagestarif = 120},
-                new LuxusklasseAuto {Marke = "Audi S6", Tagestarif = 180, Basistarif = 50},
-                new StandardAuto {Marke = "Fiat 500", Tagestarif = 75},
-            };
-
-            Kunde[] kunden = {
-                new Kunde {Name = "Nass", Vorname = "Anna", Geburtsdatum = new DateTime(1981, 05, 05)},
-                new Kunde {Name = "Beil", Vorname = "Timo", Geburtsdatum = new DateTime(1980, 09, 09)},
-                new Kunde {Name = "Pfahl", Vorname = "Martha", Geburtsdatum = new DateTime(1990, 07, 03)},
-                new Kunde {Name = "Zufall", Vorname = "Rainer", Geburtsdatum = new DateTime(1954, 11, 11)},
-            };
-
-            int year = DateTime.Now.Year + 1;
-            Reservation[] reservationen = {
-                new Reservation {Auto = autos[0], Kunde = kunden[0], Von = new DateTime(year, 01, 10), Bis = new DateTime(year, 01, 20)},
-                new Reservation {Auto = autos[1], Kunde = kunden[1], Von = new DateTime(year, 01, 10), Bis = new DateTime(year, 01, 20)},
-                new Reservation {Auto = autos[2], Kunde = kunden[2], Von = new DateTime(year, 01, 10), Bis = new DateTime(year, 01, 20)},
-                new Reservation {Auto = autos[1], Kunde = kunden[0], Von = new DateTime(year, 05, 19), Bis = new DateTime(year, 06, 19)},
-            };*/
     }
 }
