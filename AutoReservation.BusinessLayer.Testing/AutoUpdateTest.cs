@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoReservation.Dal;
+using AutoReservation.Dal.Entities;
 using AutoReservation.TestEnvironment;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -17,7 +19,7 @@ namespace AutoReservation.BusinessLayer.Testing
             _target = new AutoManager();
         }
 
-        [Fact]
+      /*  [Fact]
         public async Task UpdateAutoTest()
         {
             // arrange
@@ -26,6 +28,14 @@ namespace AutoReservation.BusinessLayer.Testing
             using(AutoReservationContext context = new AutoReservationContext())
             {
             }
+
+        }*/
+
+        [Fact]
+        public async Task GetAllAutoTest()
+        {
+            List<Auto> autos = await _target.GetAll();
+            Assert.Equal(4, autos.Count);
 
         }
     }
