@@ -51,7 +51,8 @@ namespace AutoReservation.BusinessLayer
                     return auto.Id;
                 } catch (DbUpdateConcurrencyException concurrencyException)
                 {
-                    throw new OptimisticConcurrencyException<PropertyValues>("Can not update because of a concurrency exception. Maybe the the object was updated in the meantime?", concurrencyException.Entries.First().GetDatabaseValues());
+                    var originalValues = concurrencyException.Entries.First().OriginalValues;
+                    throw new OptimisticConcurrencyException<PropertyValues>("Can not update because of a concurrency exception. Maybe the the object was updated in the meantime?", originalValues);
                 }
             }
         }
@@ -68,7 +69,8 @@ namespace AutoReservation.BusinessLayer
                 }
                 catch (DbUpdateConcurrencyException concurrencyException)
                 {
-                    throw new OptimisticConcurrencyException<PropertyValues>("Can not delete because of a concurrency exception. Maybe the the object was updated in the meantime?", concurrencyException.Entries.First().GetDatabaseValues());
+                    var originalValues = concurrencyException.Entries.First().OriginalValues;
+                    throw new OptimisticConcurrencyException<PropertyValues>("Can not delete because of a concurrency exception. Maybe the the object was updated in the meantime?", originalValues);
                 }
             }
         }
