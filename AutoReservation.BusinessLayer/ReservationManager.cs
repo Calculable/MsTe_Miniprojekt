@@ -4,7 +4,6 @@ using AutoReservation.BusinessLayer.Exceptions;
 using AutoReservation.Dal;
 using AutoReservation.Dal.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -63,10 +62,9 @@ namespace AutoReservation.BusinessLayer
                     autoReservationContext.SaveChanges();
                     return reservation.ReservationsNr;
                 }
-                catch (DbUpdateConcurrencyException concurrencyException)
+                catch (DbUpdateConcurrencyException)
                 {
-                    var originalValues = concurrencyException.Entries.First().OriginalValues;
-                    throw new OptimisticConcurrencyException<PropertyValues>("Can not update reservation because of a concurrency exception. Maybe the the reservation was updated in the meantime?", originalValues);
+                    throw CreateOptimisticConcurrencyException(autoReservationContext, reservation);
                 }
             }
         }
@@ -80,10 +78,9 @@ namespace AutoReservation.BusinessLayer
                 {
                     autoReservationContext.SaveChanges();
                 }
-                catch (DbUpdateConcurrencyException concurrencyException)
+                catch (DbUpdateConcurrencyException)
                 {
-                    var originalValues = concurrencyException.Entries.First().OriginalValues;
-                    throw new OptimisticConcurrencyException<PropertyValues>("Can not delete reservation because of a concurrency exception. Maybe the the reservation was updated in the meantime?", originalValues);
+                    throw CreateOptimisticConcurrencyException(autoReservationContext, reservation);
                 }
             }
         }

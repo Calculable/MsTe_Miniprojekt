@@ -115,7 +115,7 @@ namespace AutoReservation.BusinessLayer.Testing
             inserted2.Bis = new DateTime(2021, 03, 10);
             _target.update(inserted2);
 
-            var ex = Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.delete(inserted1));
+            var ex = Assert.Throws<OptimisticConcurrencyException<Reservation>>(() => _target.delete(inserted1));
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace AutoReservation.BusinessLayer.Testing
 
             reservation.Bis = new DateTime(2021, 04, 10);
 
-            var ex = Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.update(inserted2));
+            var ex = Assert.Throws<OptimisticConcurrencyException<Reservation>>(() => _target.update(inserted2));
         }
 
         private Reservation createNewExampleReservation()

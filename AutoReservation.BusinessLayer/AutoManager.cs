@@ -49,10 +49,9 @@ namespace AutoReservation.BusinessLayer
                 {
                     autoReservationContext.SaveChanges();
                     return auto.Id;
-                } catch (DbUpdateConcurrencyException concurrencyException)
+                } catch (DbUpdateConcurrencyException)
                 {
-                    var originalValues = concurrencyException.Entries.First().OriginalValues;
-                    throw new OptimisticConcurrencyException<PropertyValues>("Can not update car because of a concurrency exception. Maybe the the car was updated in the meantime?", originalValues);
+                    throw CreateOptimisticConcurrencyException(autoReservationContext, auto);
                 }
             }
         }
@@ -67,10 +66,9 @@ namespace AutoReservation.BusinessLayer
                 {
                     autoReservationContext.SaveChanges();
                 }
-                catch (DbUpdateConcurrencyException concurrencyException)
+                catch (DbUpdateConcurrencyException)
                 {
-                    var originalValues = concurrencyException.Entries.First().OriginalValues;
-                    throw new OptimisticConcurrencyException<PropertyValues>("Can not delete car because of a concurrency exception. Maybe the the car was updated in the meantime?", originalValues);
+                    throw CreateOptimisticConcurrencyException(autoReservationContext, auto);
                 }
             }
         }

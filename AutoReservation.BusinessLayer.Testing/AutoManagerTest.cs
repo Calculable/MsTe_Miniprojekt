@@ -104,7 +104,7 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Auto auto = new MittelklasseAuto { Marke = "Testmarke", Tagestarif = 40 };
            
-            Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.delete(auto));
+            Assert.Throws<OptimisticConcurrencyException<Auto>>(() => _target.delete(auto));
 
         }
 
@@ -120,7 +120,7 @@ namespace AutoReservation.BusinessLayer.Testing
             inserted2.Marke = "another";
             _target.update(inserted2);
 
-            var ex = Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.delete(inserted1));
+            var ex = Assert.Throws<OptimisticConcurrencyException<Auto>>(() => _target.delete(inserted1));
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace AutoReservation.BusinessLayer.Testing
 
             inserted2.Marke = "two";
 
-            var ex = Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.update(inserted2));
+            var ex = Assert.Throws<OptimisticConcurrencyException<Auto>>(() => _target.update(inserted2));
         }
 
     }

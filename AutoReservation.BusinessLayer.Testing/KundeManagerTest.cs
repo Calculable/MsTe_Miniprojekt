@@ -95,7 +95,7 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Kunde kunde = new Kunde { Name = "Mustermann", Vorname = "Max", Geburtsdatum = new DateTime(1990, 05, 02) };
 
-            Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.delete(kunde));
+            Assert.Throws<OptimisticConcurrencyException<Kunde>>(() => _target.delete(kunde));
 
         }
 
@@ -111,7 +111,7 @@ namespace AutoReservation.BusinessLayer.Testing
             inserted2.Name = "another";
             _target.update(inserted2);
 
-            var ex = Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.delete(inserted1));
+            var ex = Assert.Throws<OptimisticConcurrencyException<Kunde>>(() => _target.delete(inserted1));
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace AutoReservation.BusinessLayer.Testing
 
             inserted2.Name = "two";
 
-            var ex = Assert.Throws<OptimisticConcurrencyException<PropertyValues>>(() => _target.update(inserted2));
+            var ex = Assert.Throws<OptimisticConcurrencyException<Kunde>>(() => _target.update(inserted2));
         }
 
     }
