@@ -45,6 +45,6 @@ message ReservationDTO {
 }
 
 message ReservationDTOList {
-	repeated ReservationDTO autos = 1;
+	repeated ReservationDTO reservationen = 1;
 }
 

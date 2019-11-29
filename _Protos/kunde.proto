@@ -37,5 +37,5 @@ message KundeDTO {
 }
 
 message KundeDTOList {
-	repeated KundeDTO autos = 1;
+	repeated KundeDTO kunden = 1;
 }

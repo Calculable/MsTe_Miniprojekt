@@ -105,10 +105,12 @@ namespace AutoReservation.Service.Grpc
         {
             return ConvertGenericList(dtos, ConvertToEntity);
         }
-        public static async Task<List<KundeDTO>> ConvertToDtos(this Task<List<Kunde>> entitiesTask) => (await entitiesTask).ConvertToDtos();
-        public static List<KundeDTO> ConvertToDtos(this IEnumerable<Kunde> entities)
+        public static async Task<KundeDTOList> ConvertToDtos(this Task<List<Kunde>> entitiesTask) => (await entitiesTask).ConvertToDtos();
+        public static KundeDTOList ConvertToDtos(this IEnumerable<Kunde> entities)
         {
-            return ConvertGenericList(entities, ConvertToDto);
+            KundeDTOList kundeDTOList = new KundeDTOList();
+            kundeDTOList.Kunden.Add(ConvertGenericList(entities, ConvertToDto));
+            return kundeDTOList;
         }
         #endregion
         #region Reservation
@@ -149,10 +151,12 @@ namespace AutoReservation.Service.Grpc
         {
             return ConvertGenericList(dtos, ConvertToEntity);
         }
-        public static async Task<List<ReservationDTO>> ConvertToDtos(this Task<List<Reservation>> entitiesTask) => (await entitiesTask).ConvertToDtos();
-        public static List<ReservationDTO> ConvertToDtos(this IEnumerable<Reservation> entities)
+        public static async Task<ReservationDTOList> ConvertToDtos(this Task<List<Reservation>> entitiesTask) => (await entitiesTask).ConvertToDtos();
+        public static ReservationDTOList ConvertToDtos(this IEnumerable<Reservation> entities)
         {
-            return ConvertGenericList(entities, ConvertToDto);
+            ReservationDTOList reservationDTOList = new ReservationDTOList();
+            reservationDTOList.Reservationen.Add(ConvertGenericList(entities, ConvertToDto));
+            return reservationDTOList;
         }
         #endregion
 
