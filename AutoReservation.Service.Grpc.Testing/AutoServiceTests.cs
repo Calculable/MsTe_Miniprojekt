@@ -22,10 +22,9 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public async Task GetAutosTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            AutoDTOList result = _target.ReadAllAutos(new Empty());
+            Assert.Equal(4, result.Autos.Count);
+
         }
 
         [Fact]
