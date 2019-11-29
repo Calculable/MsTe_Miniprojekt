@@ -1,10 +1,50 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "AutoReservation.Service.Grpc";
 
 package AutoReservation;
 
 service AutoService {
+
+	rpc ReadAllAutos (google.protobuf.Empty)
+		returns (AutoDTOList);
+
+	rpc ReadAutoForId (AutoIdentifier)
+		returns (AutoDTO);
+
+	rpc InsertAuto (AutoDTO)
+		returns (google.protobuf.Empty);
+	
+	rpc UpdateAuto (AutoDTO)
+		returns (google.protobuf.Empty);
+
+	rpc DeleteAuto (AutoDTO)
+		returns (google.protobuf.Empty);
 }
+
+message AutoIdentifier {
+	int32 id = 1;
+}
+
+message AutoDTO {
+	int32 id = 1;
+	int32 basistarif = 2;
+	string marke = 3;
+	bytes rowVersion = 4; 
+	int32 tagestarif = 5;
+	AutoKlasse klasse = 6;
+}
+
+enum AutoKlasse {
+	Luxusklasse = 0;
+	Mittelklasse = 1;
+	Standard = 2;
+}
+
+message AutoDTOList {
+	repeated AutoDTO autos = 1;
+}
+
