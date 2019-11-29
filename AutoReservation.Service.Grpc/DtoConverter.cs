@@ -11,14 +11,14 @@ namespace AutoReservation.Service.Grpc
     internal static class DtoConverter
     {
         #region Auto
-        private static Auto GetAutoInstance(AutoDto dto)
+        private static Auto GetAutoInstance(AutoDTO dto)
         {
-            if (dto.AutoKlasse == AutoKlasse.Standard) { return new StandardAuto(); }
-            if (dto.AutoKlasse == AutoKlasse.Mittelklasse) { return new MittelklasseAuto(); }
-            if (dto.AutoKlasse == AutoKlasse.Luxusklasse) { return new LuxusklasseAuto(); }
+            if (dto.Klasse == AutoKlasse.Standard) { return new StandardAuto(); }
+            if (dto.Klasse == AutoKlasse.Mittelklasse) { return new MittelklasseAuto(); }
+            if (dto.Klasse == AutoKlasse.Luxusklasse) { return new LuxusklasseAuto(); }
             throw new ArgumentException("Unknown AutoDto implementation.", nameof(dto));
         }
-        public static Auto ConvertToEntity(this AutoDto dto)
+        public static Auto ConvertToEntity(this AutoDTO dto)
         {
             if (dto == null) { return null; }
 
@@ -36,12 +36,12 @@ namespace AutoReservation.Service.Grpc
             }
             return auto;
         }
-        public static async Task<AutoDto> ConvertToDto(this Task<Auto> entityTask) => (await entityTask).ConvertToDto();
-        public static AutoDto ConvertToDto(this Auto entity)
+        public static async Task<AutoDTO> ConvertToDto(this Task<Auto> entityTask) => (await entityTask).ConvertToDto();
+        public static AutoDTO ConvertToDto(this Auto entity)
         {
             if (entity == null) { return null; }
 
-            AutoDto dto = new AutoDto
+            AutoDTO dto = new AutoDTO
             {
                 Id = entity.Id,
                 Marke = entity.Marke,
@@ -49,35 +49,35 @@ namespace AutoReservation.Service.Grpc
                 RowVersion = ByteString.CopyFrom(entity.RowVersion ?? new byte[0]),
             };
 
-            if (entity is StandardAuto) { dto.AutoKlasse = AutoKlasse.Standard; }
-            if (entity is MittelklasseAuto) { dto.AutoKlasse = AutoKlasse.Mittelklasse; }
+            if (entity is StandardAuto) { dto.Klasse = AutoKlasse.Standard; }
+            if (entity is MittelklasseAuto) { dto.Klasse = AutoKlasse.Mittelklasse; }
             if (entity is LuxusklasseAuto auto)
             {
-                dto.AutoKlasse = AutoKlasse.Luxusklasse;
+                dto.Klasse = AutoKlasse.Luxusklasse;
                 dto.Basistarif = auto.Basistarif;
             }
 
             return dto;
         }
-        public static List<Auto> ConvertToEntities(this IEnumerable<AutoDto> dtos)
+        public static List<Auto> ConvertToEntities(this IEnumerable<AutoDTO> dtos)
         {
             return ConvertGenericList(dtos, ConvertToEntity);
         }
-        public static async Task<List<AutoDto>> ConvertToDtos(this Task<List<Auto>> entitiesTask) => (await entitiesTask).ConvertToDtos();
-        public static List<AutoDto> ConvertToDtos(this IEnumerable<Auto> entities)
+        public static async Task<List<AutoDTO>> ConvertToDtos(this Task<List<Auto>> entitiesTask) => (await entitiesTask).ConvertToDtos();
+        public static List<AutoDTO> ConvertToDtos(this IEnumerable<Auto> entities)
         {
             return ConvertGenericList(entities, ConvertToDto);
         }
         #endregion
         #region Kunde
-        public static Kunde ConvertToEntity(this KundeDto dto)
+        public static Kunde ConvertToEntity(this KundeDTO dto)
         {
             if (dto == null) { return null; }
 
             return new Kunde
             {
                 Id = dto.Id,
-                Nachname = dto.Nachname,
+                Name = dto.Nachname,
                 Vorname = dto.Vorname,
                 Geburtsdatum = dto.Geburtsdatum.ToDateTime(),
                 RowVersion = dto.RowVersion.Length == 0
@@ -85,32 +85,32 @@ namespace AutoReservation.Service.Grpc
                     : dto.RowVersion.ToByteArray()
             };
         }
-        public static async Task<KundeDto> ConvertToDto(this Task<Kunde> entityTask) => (await entityTask).ConvertToDto();
-        public static KundeDto ConvertToDto(this Kunde entity)
+        public static async Task<KundeDTO> ConvertToDto(this Task<Kunde> entityTask) => (await entityTask).ConvertToDto();
+        public static KundeDTO ConvertToDto(this Kunde entity)
         {
             if (entity == null) { return null; }
 
-            return new KundeDto
+            return new KundeDTO
             {
                 Id = entity.Id,
-                Nachname = entity.Nachname,
+                Nachname = entity.Name,
                 Vorname = entity.Vorname,
-                Geburtsdatum = entity.Geburtsdatum.ToTimestampUtcFaked(),
+                Geburtsdatum = entity.Geburtsdatum.HasValue?entity.Geburtsdatum.Value.ToTimestampUtcFaked():null,
                 RowVersion = ByteString.CopyFrom(entity.RowVersion ?? new byte[0]),
             };
         }
-        public static List<Kunde> ConvertToEntities(this IEnumerable<KundeDto> dtos)
+        public static List<Kunde> ConvertToEntities(this IEnumerable<KundeDTO> dtos)
         {
             return ConvertGenericList(dtos, ConvertToEntity);
         }
-        public static async Task<List<KundeDto>> ConvertToDtos(this Task<List<Kunde>> entitiesTask) => (await entitiesTask).ConvertToDtos();
-        public static List<KundeDto> ConvertToDtos(this IEnumerable<Kunde> entities)
+        public static async Task<List<KundeDTO>> ConvertToDtos(this Task<List<Kunde>> entitiesTask) => (await entitiesTask).ConvertToDtos();
+        public static List<KundeDTO> ConvertToDtos(this IEnumerable<Kunde> entities)
         {
             return ConvertGenericList(entities, ConvertToDto);
         }
         #endregion
         #region Reservation
-        public static Reservation ConvertToEntity(this ReservationDto dto)
+        public static Reservation ConvertToEntity(this ReservationDTO dto)
         {
             if (dto == null) { return null; }
 
@@ -128,12 +128,12 @@ namespace AutoReservation.Service.Grpc
 
             return reservation;
         }
-        public static async Task<ReservationDto> ConvertToDto(this Task<Reservation> entityTask) => (await entityTask).ConvertToDto();
-        public static ReservationDto ConvertToDto(this Reservation entity)
+        public static async Task<ReservationDTO> ConvertToDto(this Task<Reservation> entityTask) => (await entityTask).ConvertToDto();
+        public static ReservationDTO ConvertToDto(this Reservation entity)
         {
             if (entity == null) { return null; }
 
-            return new ReservationDto
+            return new ReservationDTO
             {
                 ReservationsNr = entity.ReservationsNr,
                 Von = entity.Von.ToTimestampUtcFaked(),
@@ -143,12 +143,12 @@ namespace AutoReservation.Service.Grpc
                 Kunde = ConvertToDto(entity.Kunde)
             };
         }
-        public static List<Reservation> ConvertToEntities(this IEnumerable<ReservationDto> dtos)
+        public static List<Reservation> ConvertToEntities(this IEnumerable<ReservationDTO> dtos)
         {
             return ConvertGenericList(dtos, ConvertToEntity);
         }
-        public static async Task<List<ReservationDto>> ConvertToDtos(this Task<List<Reservation>> entitiesTask) => (await entitiesTask).ConvertToDtos();
-        public static List<ReservationDto> ConvertToDtos(this IEnumerable<Reservation> entities)
+        public static async Task<List<ReservationDTO>> ConvertToDtos(this Task<List<Reservation>> entitiesTask) => (await entitiesTask).ConvertToDtos();
+        public static List<ReservationDTO> ConvertToDtos(this IEnumerable<Reservation> entities)
         {
             return ConvertGenericList(entities, ConvertToDto);
         }
