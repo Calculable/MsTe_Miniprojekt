@@ -63,10 +63,12 @@ namespace AutoReservation.Service.Grpc
         {
             return ConvertGenericList(dtos, ConvertToEntity);
         }
-        public static async Task<List<AutoDTO>> ConvertToDtos(this Task<List<Auto>> entitiesTask) => (await entitiesTask).ConvertToDtos();
-        public static List<AutoDTO> ConvertToDtos(this IEnumerable<Auto> entities)
+        public static async Task<AutoDTOList> ConvertToDtos(this Task<List<Auto>> entitiesTask) => (await entitiesTask).ConvertToDtos();
+        public static AutoDTOList ConvertToDtos(this IEnumerable<Auto> entities)
         {
-            return ConvertGenericList(entities, ConvertToDto);
+            AutoDTOList autoDTOList = new AutoDTOList();
+            autoDTOList.Autos.Add(ConvertGenericList(entities, ConvertToDto));
+            return autoDTOList;
         }
         #endregion
         #region Kunde
