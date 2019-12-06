@@ -15,10 +15,10 @@ service KundeService {
 		returns (KundeDTO);
 
 	rpc InsertKunde (KundeDTO)
-		returns (google.protobuf.Empty);
+		returns (KundeIdentifier);
 	
 	rpc UpdateKunde (KundeDTO)
-		returns (google.protobuf.Empty);
+		returns (KundeIdentifier);
 
 	rpc DeleteKunde (KundeDTO)
 		returns (google.protobuf.Empty);

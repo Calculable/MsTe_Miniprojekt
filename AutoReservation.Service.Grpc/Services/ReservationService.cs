@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoReservation.BusinessLayer;
@@ -5,6 +6,7 @@ using AutoReservation.BusinessLayer.Exceptions;
 using AutoReservation.Dal.Entities;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace AutoReservation.Service.Grpc.Services
@@ -28,65 +30,102 @@ namespace AutoReservation.Service.Grpc.Services
                 reservationManager.delete(ReservationEntity);
                 return Task.FromResult(new Empty());
             }
-            catch (OptimisticConcurrencyException<Reservation> exception)
+            catch (OptimisticConcurrencyException<Reservation>)
             {
-                throw new ServiceException<Reservation>(exception);
+                throw new RpcException(new Status(StatusCode.Aborted, "Reservation could not be deleted because of a concurrency exception"));
             }
             catch (InvalidDateRangeException exception)
             {
-                throw new ServiceException<Reservation>(exception);
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The provided date-range for the reservation is not valid"));
             }
             catch (AutoUnavailableException exception)
             {
-                throw new ServiceException<Reservation>(exception);
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The requested Auto is no available at the given date-range"));
+            }
+            catch (DbUpdateException)
+            {
+                throw new RpcException(new Status(StatusCode.Unknown, "An exception occured while deleting Reservation"));
             }
 
         }
 
-        public override Task<Empty> InsertReservation(ReservationDTO reservationDTO, ServerCallContext context)
+        public override Task<ReservationIdentifier> InsertReservation(ReservationDTO reservationDTO, ServerCallContext context)
         {
             Reservation ReservationEntity = DtoConverter.ConvertToEntity(reservationDTO);
             ReservationManager ReservationManager = new ReservationManager();
-            ReservationManager.insert(ReservationEntity);
-            return Task.FromResult(new Empty());
+
+            int newId;
+            try
+            {
+                newId = ReservationManager.insert(ReservationEntity);
+            }
+            catch (DbUpdateException)
+            {
+                throw new RpcException(new Status(StatusCode.Unknown, "An exception occured while inserting Auto"));
+            }
+
+            ReservationIdentifier reservationIdentifier = new ReservationIdentifier();
+            reservationIdentifier.ReservationsNr = newId;
+
+            return Task.FromResult(reservationIdentifier);
         }
 
         public override Task<ReservationDTOList> ReadAllReservationen(Empty request, ServerCallContext context)
         {
             ReservationManager ReservationManager = new ReservationManager();
-            Task<List<Reservation>> allReservationen = ReservationManager.GetAll();
+
+            Task<List<Reservation>>  allReservationen = ReservationManager.GetAll();
+            
             return DtoConverter.ConvertToDtos(allReservationen);
         }
 
         public override Task<ReservationDTO> ReadReservationForId(ReservationIdentifier reservationDTOIdentifier, ServerCallContext context)
         {
             ReservationManager ReservationManager = new ReservationManager();
-            Reservation ReservationEntity = ReservationManager.GetForKey(reservationDTOIdentifier.ReservationsNr);
-            return Task.FromResult(DtoConverter.ConvertToDto(ReservationEntity));
+            Reservation reservationEntity;
+            try
+            {
+                reservationEntity = ReservationManager.GetForKey(reservationDTOIdentifier.ReservationsNr);
+
+            } catch (InvalidOperationException)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Reservation with the given id could not be found"));
+
+            }
+
+            return Task.FromResult(DtoConverter.ConvertToDto(reservationEntity));
         }
 
-        public override Task<Empty> UpdateReservation(ReservationDTO reservationDTO, ServerCallContext context)
+        public override Task<ReservationIdentifier> UpdateReservation(ReservationDTO reservationDTO, ServerCallContext context)
         {
             Reservation ReservationEntity = DtoConverter.ConvertToEntity(reservationDTO);
             ReservationManager ReservationManager = new ReservationManager();
+            int insertedID;
             try
             {
-                ReservationManager.update(ReservationEntity);
+                insertedID = ReservationManager.update(ReservationEntity);
             }
-            catch (OptimisticConcurrencyException<Reservation> exception)
+            catch (OptimisticConcurrencyException<Reservation>)
             {
-                throw new ServiceException<Reservation>(exception);
+                throw new RpcException(new Status(StatusCode.Aborted, "Reservation could not be updated because of a concurrency exception"));
             }
-            catch (InvalidDateRangeException exception)
+            catch (InvalidDateRangeException)
             {
-                throw new ServiceException<Reservation>(exception);
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The provided date-range for the reservation is not valid"));
             }
             catch (AutoUnavailableException exception)
             {
-                throw new ServiceException<Reservation>(exception);
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The requested Auto is no available at the given date-range"));
+            }
+            catch (DbUpdateException)
+            {
+                throw new RpcException(new Status(StatusCode.Unknown, "An exception occured while updating Reservation"));
             }
 
-            return Task.FromResult(new Empty());
+            ReservationIdentifier reservationIdentifier = new ReservationIdentifier();
+            reservationIdentifier.ReservationsNr = insertedID;
+
+            return Task.FromResult(reservationIdentifier);
         }
     }    
 }

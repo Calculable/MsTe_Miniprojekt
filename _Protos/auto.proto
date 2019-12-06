@@ -15,10 +15,10 @@ service AutoService {
 		returns (AutoDTO);
 
 	rpc InsertAuto (AutoDTO)
-		returns (google.protobuf.Empty);
+		returns (AutoIdentifier);
 	
 	rpc UpdateAuto (AutoDTO)
-		returns (google.protobuf.Empty);
+		returns (AutoIdentifier);
 
 	rpc DeleteAuto (AutoDTO)
 		returns (google.protobuf.Empty);

@@ -19,10 +19,10 @@ service ReservationService {
 		returns (ReservationDTO);
 
 	rpc InsertReservation (ReservationDTO)
-		returns (google.protobuf.Empty);
+		returns (ReservationIdentifier);
 	
 	rpc UpdateReservation (ReservationDTO)
-		returns (google.protobuf.Empty);
+		returns (ReservationIdentifier);
 
 	rpc DeleteReservation (ReservationDTO)
 		returns (google.protobuf.Empty);

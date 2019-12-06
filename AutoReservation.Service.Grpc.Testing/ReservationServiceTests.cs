@@ -25,19 +25,21 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public async Task GetReservationenTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTOList result = _target.ReadAllReservationen(new Empty());
+            Assert.Equal(4, result.Reservationen.Count);
         }
 
         [Fact]
         public async Task GetReservationByIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation();
+            ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
+
+            ReservationDTO result = _target.ReadReservationForId(insertedID);
+            Assert.Equal(newReservation.Auto.Id, result.Auto.Id);
+            Assert.Equal(newReservation.Kunde.Id, result.Kunde.Id);
+            Assert.Equal(newReservation.Bis, result.Bis);
+            Assert.Equal(newReservation.Von, result.Von);
         }
 
         [Fact]
@@ -52,28 +54,42 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public async Task InsertReservationTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation();
+            _target.InsertReservation(newReservation);
+
+            ReservationDTOList result = _target.ReadAllReservationen(new Empty());
+            Assert.Equal(5, result.Reservationen.Count);
         }
 
         [Fact]
         public async Task DeleteReservationTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation();
+            ReservationIdentifier insertedId = _target.InsertReservation(newReservation);
+
+            ReservationDTO inserted = _target.ReadReservationForId(insertedId);
+
+            _target.DeleteReservation(inserted);
+
+            ReservationDTOList result = _target.ReadAllReservationen(new Empty());
+            Assert.Equal(4, result.Reservationen.Count);
         }
 
         [Fact]
         public async Task UpdateReservationTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation();
+            ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
+
+            ReservationDTO result = _target.ReadReservationForId(insertedID);
+
+            result.Bis = Timestamp.FromDateTime(new DateTime(2020, 03, 04).ToUniversalTime());
+
+            ReservationIdentifier updatedID = _target.UpdateReservation(result);
+
+            ReservationDTO updatedResult = _target.ReadReservationForId(updatedID);
+
+            Assert.Equal(result.Bis, updatedResult.Bis);
         }
 
         [Fact]
@@ -137,6 +153,40 @@ namespace AutoReservation.Service.Grpc.Testing
             // arrange
             // act
             // assert
+        }
+
+        private ReservationDTO generateExampleReservation()
+        {
+            return generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
+        }
+            private ReservationDTO generateExampleReservation(DateTime from, DateTime to)
+        {
+
+            DateTime datetime = new DateTime(1990, 05, 02);
+
+            KundeDTO kunde = new KundeDTO();
+            /* Timestamp geburtsdatum = Timestamp.FromDateTime(new DateTime(1990, 05, 02).ToUniversalTime());
+             kunde.Geburtsdatum = geburtsdatum;
+             kunde.Nachname = "Mustermann";
+             kunde.Vorname = "Max";*/
+            kunde.Id = 1;
+
+            AutoDTO auto = new AutoDTO();
+            auto.Id = 1;
+           /* auto.Basistarif = 40;
+            auto.Klasse = AutoKlasse.Mittelklasse;
+            auto.Marke = "Testmarke";
+            auto.Tagestarif = 60;*/
+
+            ReservationDTO reservationDTO = new ReservationDTO();
+            reservationDTO.Auto = auto;
+            reservationDTO.Kunde = kunde;
+            reservationDTO.Von = Timestamp.FromDateTime(from.ToUniversalTime());
+            reservationDTO.Bis = Timestamp.FromDateTime(to.ToUniversalTime());
+
+            return reservationDTO;
+
+
         }
     }
 }
