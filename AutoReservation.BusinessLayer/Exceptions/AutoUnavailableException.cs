@@ -6,6 +6,5 @@ namespace AutoReservation.BusinessLayer.Exceptions
         : Exception
     {
         public AutoUnavailableException(string message) : base(message) { }
-
     }
 }

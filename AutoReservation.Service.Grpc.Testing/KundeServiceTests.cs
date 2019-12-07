@@ -112,11 +112,9 @@ namespace AutoReservation.Service.Grpc.Testing
         {
             KundeDTO result = new KundeDTO();
 
-            Timestamp geburtsdatum = new Timestamp() { Seconds = DateTime.Now.Second - 1000000};
-
+            Timestamp geburtsdatum = Timestamp.FromDateTime(new DateTime(1990, 05, 02).ToUniversalTime());
             result.Geburtsdatum = geburtsdatum;
-            
-            //new Timestamp(new DateTime(1990, 05, 02));
+
             result.Nachname = "Mustermann";
             result.Vorname = "Max";
             return result;

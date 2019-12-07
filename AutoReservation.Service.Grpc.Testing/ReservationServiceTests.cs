@@ -149,7 +149,6 @@ namespace AutoReservation.Service.Grpc.Testing
 
             inserted2.Von = Timestamp.FromDateTime(new DateTime(2020, 03, 02).ToUniversalTime());
 
-
             var ex = Assert.Throws<RpcException>(() => _target.UpdateReservation(inserted2));
             Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
         }

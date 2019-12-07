@@ -21,8 +21,6 @@ namespace AutoReservation.Dal.Entities
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
-
-
     }
 
     public class StandardAuto: Auto
