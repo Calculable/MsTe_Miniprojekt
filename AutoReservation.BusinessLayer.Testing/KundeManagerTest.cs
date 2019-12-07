@@ -20,14 +20,11 @@ namespace AutoReservation.BusinessLayer.Testing
             _target = new KundeManager();
         }
 
-  
-
         [Fact]
         public async Task GetAllKundeTest()
         {
             List<Kunde> kunden = await _target.GetAll();
             Assert.Equal(4, kunden.Count);
-
         }
 
         [Fact]
@@ -35,7 +32,7 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Kunde kunde = new Kunde { Name = "Mustermann", Vorname = "Max", Geburtsdatum = new DateTime(1990, 05, 02) };
 
-            int newId = _target.insert(kunde);
+            _target.insert(kunde);
 
             List<Kunde> kunden = await _target.GetAll();
             Assert.Equal(5, kunden.Count);
@@ -66,12 +63,9 @@ namespace AutoReservation.BusinessLayer.Testing
             Kunde toInsert = new Kunde { Name = "Mustermann", Vorname = "Max", Geburtsdatum = new DateTime(1990, 05, 02) };
             int newId = _target.insert(toInsert);
 
-
             Kunde inserted = _target.GetForKey(newId);
 
             Assert.Throws<DbUpdateException>(() => _target.insert(inserted));
-
-
         }
 
         [Fact]
@@ -96,7 +90,6 @@ namespace AutoReservation.BusinessLayer.Testing
             Kunde kunde = new Kunde { Name = "Mustermann", Vorname = "Max", Geburtsdatum = new DateTime(1990, 05, 02) };
 
             Assert.Throws<OptimisticConcurrencyException<Kunde>>(() => _target.delete(kunde));
-
         }
 
         [Fact]
@@ -104,7 +97,6 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Kunde kunde = new Kunde { Name = "Mustermann", Vorname = "Max", Geburtsdatum = new DateTime(1990, 05, 02) };
             int newId = _target.insert(kunde);
-
 
             Kunde inserted1 = _target.GetForKey(newId);
             Kunde inserted2 = _target.GetForKey(newId);
@@ -133,7 +125,6 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Kunde kunde = new Kunde { Name = "Mustermann", Vorname = "Max", Geburtsdatum = new DateTime(1990, 05, 02) };
             int newId = _target.insert(kunde);
-
 
             Kunde inserted1 = _target.GetForKey(newId);
             Kunde inserted2 = _target.GetForKey(newId);

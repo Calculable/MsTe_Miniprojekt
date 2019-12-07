@@ -33,9 +33,7 @@ service ReservationService {
 
 
 message ReservationIdentifier {
-
 	int32 reservationsNr = 1;
-
 }
 
 message ReservationDTO {

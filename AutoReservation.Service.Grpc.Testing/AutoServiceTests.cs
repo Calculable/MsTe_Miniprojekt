@@ -26,7 +26,6 @@ namespace AutoReservation.Service.Grpc.Testing
         {
             AutoDTOList result = _target.ReadAllAutos(new Empty());
             Assert.Equal(4, result.Autos.Count);
-
         }
 
         [Fact]
@@ -41,7 +40,6 @@ namespace AutoReservation.Service.Grpc.Testing
 
             Assert.Equal(newAuto.Tagestarif, result.Tagestarif);
             Assert.Equal(newAuto.Basistarif, result.Basistarif);
-
         }
 
         [Fact]
@@ -54,7 +52,6 @@ namespace AutoReservation.Service.Grpc.Testing
 
              var ex = Assert.Throws<RpcException>(() => _target.ReadAutoForId(autoIdentifier));
              Assert.Equal(StatusCode.NotFound, ex.StatusCode);
-
         }
 
         [Fact]
@@ -95,14 +92,12 @@ namespace AutoReservation.Service.Grpc.Testing
 
             AutoDTO updatedResult = _target.ReadAutoForId(insertedID);
 
-
             Assert.Equal(result.Marke, updatedResult.Marke);
         }
 
         [Fact]
         public async Task UpdateAutoWithOptimisticConcurrencyTest()
         {
-
             AutoDTO newAuto = generateExampleAuto();
             AutoIdentifier insertedID = _target.InsertAuto(newAuto);
 
@@ -113,7 +108,6 @@ namespace AutoReservation.Service.Grpc.Testing
             inserted2.Tagestarif = 20;
 
             _target.UpdateAuto(inserted);
-
          
             var ex = Assert.Throws<RpcException>(() => _target.UpdateAuto(inserted2));
             Assert.Equal(StatusCode.Aborted, ex.StatusCode);

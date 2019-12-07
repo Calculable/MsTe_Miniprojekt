@@ -87,7 +87,6 @@ namespace AutoReservation.Service.Grpc.Testing
 
             KundeDTO updatedResult = _target.ReadKundeForId(insertedID);
 
-
             Assert.Equal(result.Vorname, updatedResult.Vorname);
         }
 
@@ -104,7 +103,6 @@ namespace AutoReservation.Service.Grpc.Testing
             inserted2.Vorname = "Anderer Vorname";
 
             _target.UpdateKunde(inserted);
-
 
             var ex = Assert.Throws<RpcException>(() => _target.UpdateKunde(inserted2));
             Assert.Equal(StatusCode.Aborted, ex.StatusCode);

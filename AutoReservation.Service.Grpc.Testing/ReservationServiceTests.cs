@@ -134,7 +134,6 @@ namespace AutoReservation.Service.Grpc.Testing
 
             var ex = Assert.Throws<RpcException>(() => _target.InsertReservation(reservationForUnavailableAuto));
             Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
-
         }
 
         [Fact]
@@ -153,7 +152,6 @@ namespace AutoReservation.Service.Grpc.Testing
 
             var ex = Assert.Throws<RpcException>(() => _target.UpdateReservation(inserted2));
             Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
-
         }
 
         [Fact]
@@ -166,7 +164,6 @@ namespace AutoReservation.Service.Grpc.Testing
 
             result.Bis = Timestamp.FromDateTime(new DateTime(2020, 03, 01).ToUniversalTime());
 
-
             var ex = Assert.Throws<RpcException>(() => _target.UpdateReservation(result));
             Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
         }
@@ -177,7 +174,6 @@ namespace AutoReservation.Service.Grpc.Testing
             ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
             _target.InsertReservation(newReservation);
 
-
             Assert.True(_target.IsCarAvailable(generateExampleReservation(new DateTime(2020, 03, 04), new DateTime(2020, 03, 04))).CarAvailable);
         }
 
@@ -187,7 +183,6 @@ namespace AutoReservation.Service.Grpc.Testing
             ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
             _target.InsertReservation(newReservation);
 
-
             Assert.True(_target.IsCarAvailable(generateExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 02))).CarAvailable);
         }
 
@@ -195,24 +190,14 @@ namespace AutoReservation.Service.Grpc.Testing
         {
             return generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
         }
-            private ReservationDTO generateExampleReservation(DateTime from, DateTime to)
+        private ReservationDTO generateExampleReservation(DateTime from, DateTime to)
         {
 
-            DateTime datetime = new DateTime(1990, 05, 02);
-
             KundeDTO kunde = new KundeDTO();
-            /* Timestamp geburtsdatum = Timestamp.FromDateTime(new DateTime(1990, 05, 02).ToUniversalTime());
-             kunde.Geburtsdatum = geburtsdatum;
-             kunde.Nachname = "Mustermann";
-             kunde.Vorname = "Max";*/
             kunde.Id = 1;
 
             AutoDTO auto = new AutoDTO();
             auto.Id = 1;
-           /* auto.Basistarif = 40;
-            auto.Klasse = AutoKlasse.Mittelklasse;
-            auto.Marke = "Testmarke";
-            auto.Tagestarif = 60;*/
 
             ReservationDTO reservationDTO = new ReservationDTO();
             reservationDTO.Auto = auto;
@@ -221,7 +206,6 @@ namespace AutoReservation.Service.Grpc.Testing
             reservationDTO.Bis = Timestamp.FromDateTime(to.ToUniversalTime());
 
             return reservationDTO;
-
 
         }
     }

@@ -11,7 +11,6 @@ namespace AutoReservation.BusinessLayer.Exceptions
             this.secondDate = secondDate;
               
         }
-
         public DateTime firstDate { get; set; }
         public DateTime secondDate { get; set; }
 

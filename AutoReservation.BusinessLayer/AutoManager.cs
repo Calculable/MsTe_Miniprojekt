@@ -72,7 +72,5 @@ namespace AutoReservation.BusinessLayer
                 }
             }
         }
-
-      
     }
 }

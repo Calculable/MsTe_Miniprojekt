@@ -20,24 +20,22 @@ namespace AutoReservation.Dal.Entities
         public ICollection<Reservation> Reservationen { get; set; }
 
         [Timestamp]
-        public byte[] RowVersion { get; set; } //Datentyp Timestamp?, Optional
+        public byte[] RowVersion { get; set; }
 
 
     }
 
     public class StandardAuto: Auto
     {
-       
     }
 
     public class LuxusklasseAuto : Auto
     {
-        [Column("Basistarif"), Required] //Achtung : Im Datenmodell als nicht Required angegeben - das liegt aber daran, dass in der gleichen Tabelle auch nicht-Luxuswagen gespeichert werden
+        [Column("Basistarif"), Required] //Achtung : Im Datenmodell als nicht Required angegeben - das liegt daran, dass in der gleichen Tabelle auch nicht-Luxuswagen gespeichert werden
         public int Basistarif { get; set; }
     }
 
     public class MittelklasseAuto : Auto
     {
-
     }
 }

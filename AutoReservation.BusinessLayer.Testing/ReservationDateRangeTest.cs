@@ -20,21 +20,19 @@ namespace AutoReservation.BusinessLayer.Testing
         public void ScenarioOkay01Exactly24HoursTest()
         {
             Reservation firstReservation = createNewExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 04));
-            int firstResult = _target.insert(firstReservation);
-
+            _target.insert(firstReservation);
         }
 
         [Fact]
         public void ScenarioOkay02VeryLongreservationTest()
         {
             Reservation firstReservation = createNewExampleReservation(new DateTime(2020, 03, 02), new DateTime(2021, 08, 07));
-            int firstResult = _target.insert(firstReservation);
+            _target.insert(firstReservation);
         }
 
         [Fact]
         public void ScenarioNotOkay01LessThan24HoursTest()
         {
-
             DateTime dateTime = new DateTime(2020, 03, 02);
 
             Reservation firstReservation = createNewExampleReservation(dateTime, dateTime.AddHours(22));

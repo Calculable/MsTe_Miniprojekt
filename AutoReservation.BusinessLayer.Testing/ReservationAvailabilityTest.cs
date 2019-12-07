@@ -11,7 +11,6 @@ namespace AutoReservation.BusinessLayer.Testing
         : TestBase
     {
         private readonly ReservationManager _target;
-
         public ReservationAvailabilityTest()
         {
             _target = new ReservationManager();
@@ -23,12 +22,11 @@ namespace AutoReservation.BusinessLayer.Testing
             //| ---Date 1--- |
             //               | ---Date 2--- |
 
-
             Reservation firstReservation = createNewExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 02));
             Reservation secondReservation = createNewExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 03));
 
-            int firstResult = _target.insert(firstReservation); 
-            int secondResult = _target.insert(secondReservation);
+            _target.insert(firstReservation); 
+            _target.insert(secondReservation);
         }
 
         [Fact]
@@ -40,8 +38,8 @@ namespace AutoReservation.BusinessLayer.Testing
             Reservation firstReservation = createNewExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 02));
             Reservation secondReservation = createNewExampleReservation(new DateTime(2020, 03, 03), new DateTime(2020, 03, 04));
 
-            int firstResult = _target.insert(firstReservation);
-            int secondResult = _target.insert(secondReservation);
+            _target.insert(firstReservation);
+            _target.insert(secondReservation);
         }
 
         [Fact]
@@ -53,8 +51,8 @@ namespace AutoReservation.BusinessLayer.Testing
             Reservation firstReservation = createNewExampleReservation(new DateTime(2020, 03, 03), new DateTime(2020, 03, 04));
             Reservation secondReservation = createNewExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 03));
 
-            int firstResult = _target.insert(firstReservation);
-            int secondResult = _target.insert(secondReservation);
+            _target.insert(firstReservation);
+            _target.insert(secondReservation);
         }
 
         [Fact]
@@ -66,8 +64,8 @@ namespace AutoReservation.BusinessLayer.Testing
             Reservation firstReservation = createNewExampleReservation(new DateTime(2020, 03, 03), new DateTime(2020, 03, 04));
             Reservation secondReservation = createNewExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 02));
 
-            int firstResult = _target.insert(firstReservation);
-            int secondResult = _target.insert(secondReservation);
+            _target.insert(firstReservation);
+            _target.insert(secondReservation);
         }
 
         [Fact]
@@ -89,7 +87,6 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             //    | ---Date 1--- |
             //| ---Date 2--- |
-
 
             Reservation firstReservation = createNewExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 04));
             Reservation secondReservation = createNewExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
@@ -133,7 +130,6 @@ namespace AutoReservation.BusinessLayer.Testing
 
             //| ---Date 1--- |
             //| ---Date 2--- |
-
 
             Reservation firstReservation = createNewExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 04));
             Reservation secondReservation = createNewExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 04));

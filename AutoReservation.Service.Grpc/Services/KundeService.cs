@@ -55,7 +55,6 @@ namespace AutoReservation.Service.Grpc.Services
                 throw new RpcException(new Status(StatusCode.Unknown, "An exception occured while inserting Kunde"));
             }
 
-
             KundeIdentifier newKundeIdentifier = new KundeIdentifier();
             newKundeIdentifier.Id = newKundeId;
 
@@ -69,7 +68,6 @@ namespace AutoReservation.Service.Grpc.Services
             Task<List<Kunde>> allKunden;
 
             allKunden = KundeManager.GetAll();
-
             
             return DtoConverter.ConvertToDtos(allKunden);
         }

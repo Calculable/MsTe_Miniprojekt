@@ -5,7 +5,6 @@ using AutoReservation.BusinessLayer.Exceptions;
 using AutoReservation.Dal.Entities;
 using AutoReservation.TestEnvironment;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Xunit;
 
 namespace AutoReservation.BusinessLayer.Testing
@@ -20,31 +19,18 @@ namespace AutoReservation.BusinessLayer.Testing
             _target = new AutoManager();
         }
 
-      /*  [Fact]
-        public async Task UpdateAutoTest()
-        {
-            // arrange
-            // act
-            // assert
-            using(AutoReservationContext context = new AutoReservationContext())
-            {
-            }
-
-        }*/
-
         [Fact]
         public async Task GetAllAutoTest()
         {
             List<Auto> autos = await _target.GetAll();
             Assert.Equal(4, autos.Count);
-
         }
 
         [Fact]
         public async Task InsertAutoTest()
         {
             Auto auto = new MittelklasseAuto { Marke = "Testmarke", Tagestarif = 40 };
-            int newId = _target.insert(auto);
+            _target.insert(auto);
 
             List<Auto> autos = await _target.GetAll();
             Assert.Equal(5, autos.Count);
@@ -59,7 +45,6 @@ namespace AutoReservation.BusinessLayer.Testing
             Auto inserted = _target.GetForKey(newId);
             Assert.Equal(toInsert.Marke, inserted.Marke);
             Assert.Equal(toInsert.Tagestarif, inserted.Tagestarif);
-
         }
 
         [Fact]
@@ -74,13 +59,10 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Auto toInsert = new MittelklasseAuto { Marke = "Testmarke", Tagestarif = 40 };
             int newId = _target.insert(toInsert);
-
             
             Auto inserted = _target.GetForKey(newId);
 
             Assert.Throws<DbUpdateException>(() => _target.insert(inserted));
-
-
         }
 
         [Fact]
@@ -103,9 +85,7 @@ namespace AutoReservation.BusinessLayer.Testing
         public void DeleteNotInsertedAutoThrowsExceptionTest()
         {
             Auto auto = new MittelklasseAuto { Marke = "Testmarke", Tagestarif = 40 };
-           
             Assert.Throws<OptimisticConcurrencyException<Auto>>(() => _target.delete(auto));
-
         }
 
         [Fact]
@@ -113,7 +93,6 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Auto auto = new MittelklasseAuto { Marke = "Testmarke", Tagestarif = 40 };
             int newId = _target.insert(auto);
-
 
             Auto inserted1 = _target.GetForKey(newId);
             Auto inserted2 = _target.GetForKey(newId);
@@ -142,7 +121,6 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Auto auto = new MittelklasseAuto { Marke = "Testmarke", Tagestarif = 40 };
             int newId = _target.insert(auto);
-
 
             Auto inserted1 = _target.GetForKey(newId);
             Auto inserted2 = _target.GetForKey(newId);

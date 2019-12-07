@@ -14,7 +14,6 @@ namespace AutoReservation.Service.Grpc.Services
     internal class AutoService : Grpc.AutoService.AutoServiceBase
     {
         private readonly ILogger<AutoService> _logger;
-
         public AutoService(ILogger<AutoService> logger)
         {
             _logger = logger;
@@ -39,9 +38,6 @@ namespace AutoReservation.Service.Grpc.Services
                 throw new RpcException(new Status(StatusCode.Unknown, "An exception occured while deleting Auto"));
 
             }
-
-
-
         } 
 
         public override Task<AutoIdentifier> InsertAuto(AutoDTO autoDTO, ServerCallContext context)
@@ -86,10 +82,6 @@ namespace AutoReservation.Service.Grpc.Services
             {
                 throw new RpcException(new Status(StatusCode.NotFound, "Auto with the given id could not be found"));
             }
-
-            //   T:System.InvalidOperationException:
-            //     No element satisfies the condition in predicate. -or- More than one element satisfies
-            //     the condition in predicate. -or- The source sequence is empty.
 
             return Task.FromResult(DtoConverter.ConvertToDto(autoEntity));
         }

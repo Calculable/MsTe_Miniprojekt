@@ -29,10 +29,7 @@ namespace AutoReservation.Dal.Entities
         public DateTime Von { get; set; }
 
         [Timestamp]
-        public byte[] RowVersion { get; set; } //Datentyp Timestamp?, Optional
-
-
-
+        public byte[] RowVersion { get; set; } 
     }
 
 }

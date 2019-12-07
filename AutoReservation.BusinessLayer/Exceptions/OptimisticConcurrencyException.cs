@@ -10,7 +10,6 @@ namespace AutoReservation.BusinessLayer.Exceptions
         {
             MergedEntity = mergedEntity;
         }
-
         public T MergedEntity { get; set; }
     }
 }

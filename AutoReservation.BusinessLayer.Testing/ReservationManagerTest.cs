@@ -20,14 +20,11 @@ namespace AutoReservation.BusinessLayer.Testing
             _target = new ReservationManager();
         }
 
-
-
         [Fact]
         public async Task GetAllReservationenTest()
         {
             List<Reservation> reservations = await _target.GetAll();
             Assert.Equal(4, reservations.Count);
-
         }
 
         [Fact]
@@ -35,7 +32,7 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Reservation reservation = createNewExampleReservation();
 
-            int newId = _target.insert(reservation);
+            _target.insert(reservation);
 
             List<Reservation> reservations = await _target.GetAll();
             Assert.Equal(5, reservations.Count);
@@ -54,7 +51,6 @@ namespace AutoReservation.BusinessLayer.Testing
             //check that kunde und auto are loaded too
             Assert.Equal(reservationToInsert.Kunde.Name, inserted.Kunde.Name);
             Assert.Equal(reservationToInsert.Auto.Marke, inserted.Auto.Marke);
-
         }
 
         [Fact]
@@ -70,12 +66,9 @@ namespace AutoReservation.BusinessLayer.Testing
             Reservation toInsert = createNewExampleReservation();
             int newId = _target.insert(toInsert);
 
-
             Reservation inserted = _target.GetForKey(newId);
 
             Assert.Throws<DbUpdateException>(() => _target.insert(inserted));
-
-
         }
 
         [Fact]
@@ -100,7 +93,6 @@ namespace AutoReservation.BusinessLayer.Testing
             Reservation reservation = createNewExampleReservation();
 
             Assert.Throws<InvalidOperationException>(() => _target.delete(reservation));
-
         }
 
         [Fact]
@@ -108,7 +100,6 @@ namespace AutoReservation.BusinessLayer.Testing
         {
             Reservation reservation = createNewExampleReservation();
             int newId = _target.insert(reservation);
-
 
             Reservation inserted1 = _target.GetForKey(newId);
             Reservation inserted2 = _target.GetForKey(newId);
@@ -152,7 +143,6 @@ namespace AutoReservation.BusinessLayer.Testing
             Reservation reservation = createNewExampleReservation();
             int newId = _target.insert(reservation);
 
-
             Reservation inserted1 = _target.GetForKey(newId);
             Reservation inserted2 = _target.GetForKey(newId);
 
@@ -170,29 +160,5 @@ namespace AutoReservation.BusinessLayer.Testing
             Kunde kunde = new Kunde { Name = "Müller", Vorname = "Judith", Geburtsdatum = new DateTime(1980, 02, 13) };
             return new Reservation { Auto = auto, Kunde = kunde, Von = new DateTime(2020, 01, 10), Bis = new DateTime(2020, 01, 20) };
         }
-
-
-
-        /*            Auto[] autos = {
-                new StandardAuto {Marke = "Fiat Punto", Tagestarif = 50},
-                new MittelklasseAuto {Marke = "VW Golf", Tagestarif = 120},
-                new LuxusklasseAuto {Marke = "Audi S6", Tagestarif = 180, Basistarif = 50},
-                new StandardAuto {Marke = "Fiat 500", Tagestarif = 75},
-            };
-
-            Kunde[] kunden = {
-                new Kunde {Name = "Nass", Vorname = "Anna", Geburtsdatum = new DateTime(1981, 05, 05)},
-                new Kunde {Name = "Beil", Vorname = "Timo", Geburtsdatum = new DateTime(1980, 09, 09)},
-                new Kunde {Name = "Pfahl", Vorname = "Martha", Geburtsdatum = new DateTime(1990, 07, 03)},
-                new Kunde {Name = "Zufall", Vorname = "Rainer", Geburtsdatum = new DateTime(1954, 11, 11)},
-            };
-
-            int year = DateTime.Now.Year + 1;
-            Reservation[] reservationen = {
-                new Reservation {Auto = autos[0], Kunde = kunden[0], Von = new DateTime(year, 01, 10), Bis = new DateTime(year, 01, 20)},
-                new Reservation {Auto = autos[1], Kunde = kunden[1], Von = new DateTime(year, 01, 10), Bis = new DateTime(year, 01, 20)},
-                new Reservation {Auto = autos[2], Kunde = kunden[2], Von = new DateTime(year, 01, 10), Bis = new DateTime(year, 01, 20)},
-                new Reservation {Auto = autos[1], Kunde = kunden[0], Von = new DateTime(year, 05, 19), Bis = new DateTime(year, 06, 19)},
-            };*/
     }
 }
