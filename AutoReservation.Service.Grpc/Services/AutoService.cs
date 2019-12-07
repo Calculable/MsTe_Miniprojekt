@@ -29,11 +29,11 @@ namespace AutoReservation.Service.Grpc.Services
                 autoManager.delete(autoEntity);
                 return Task.FromResult(new Empty());
             }
-            catch (OptimisticConcurrencyException<Auto> exception)
+            catch (OptimisticConcurrencyException<Auto>)
             {
                 throw new RpcException(new Status(StatusCode.Aborted, "Auto could not be deleted because of a concurrency exception"));
             }
-            catch (DbUpdateException exception)
+            catch (DbUpdateException)
             {
                 throw new RpcException(new Status(StatusCode.Unknown, "An exception occured while deleting Auto"));
 
@@ -95,7 +95,7 @@ namespace AutoReservation.Service.Grpc.Services
             {
                 newId= autoManager.update(autoEntity);
             }
-            catch (OptimisticConcurrencyException<Auto> exception)
+            catch (OptimisticConcurrencyException<Auto>)
             {
                 throw new RpcException(new Status(StatusCode.Aborted, "Auto could not be updated because of a concurrency exception"));
             }

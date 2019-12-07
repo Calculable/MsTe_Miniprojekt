@@ -23,14 +23,14 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task GetReservationenTest()
+        public void GetReservationenTest()
         {
             ReservationDTOList result = _target.ReadAllReservationen(new Empty());
             Assert.Equal(4, result.Reservationen.Count);
         }
 
         [Fact]
-        public async Task GetReservationByIdTest()
+        public void GetReservationByIdTest()
         {
             ReservationDTO newReservation = generateExampleReservation();
             ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
@@ -43,7 +43,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task GetReservationByIdWithIllegalIdTest()
+        public void GetReservationByIdWithIllegalIdTest()
         {
             int illegalId = 999;
 
@@ -55,7 +55,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task InsertReservationTest()
+        public void InsertReservationTest()
         {
             ReservationDTO newReservation = generateExampleReservation();
             _target.InsertReservation(newReservation);
@@ -65,7 +65,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task DeleteReservationTest()
+        public void DeleteReservationTest()
         {
             ReservationDTO newReservation = generateExampleReservation();
             ReservationIdentifier insertedId = _target.InsertReservation(newReservation);
@@ -79,7 +79,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task UpdateReservationTest()
+        public void UpdateReservationTest()
         {
             ReservationDTO newReservation = generateExampleReservation();
             ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
@@ -96,7 +96,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task UpdateReservationWithOptimisticConcurrencyTest()
+        public void UpdateReservationWithOptimisticConcurrencyTest()
         {
             ReservationDTO newReservation = generateExampleReservation();
             ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
@@ -115,7 +115,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task InsertReservationWithInvalidDateRangeTest()
+        public void InsertReservationWithInvalidDateRangeTest()
         {
             ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 03), new DateTime(2020, 03, 01));
 
@@ -124,7 +124,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task InsertReservationWithAutoNotAvailableTest()
+        public void InsertReservationWithAutoNotAvailableTest()
         {
 
             ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
@@ -137,7 +137,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task UpdateReservationWithInvalidDateRangeTest()
+        public void UpdateReservationWithInvalidDateRangeTest()
         {
             ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
             ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
@@ -155,7 +155,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task UpdateReservationWithAutoNotAvailableTest()
+        public void UpdateReservationWithAutoNotAvailableTest()
         {
             ReservationDTO newReservation = generateExampleReservation();
             ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
@@ -169,7 +169,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task CheckAvailabilityIsTrueTest()
+        public void CheckAvailabilityIsTrueTest()
         {
             ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
             _target.InsertReservation(newReservation);
@@ -178,7 +178,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task CheckAvailabilityIsFalseTest()
+        public void CheckAvailabilityIsFalseTest()
         {
             ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
             _target.InsertReservation(newReservation);

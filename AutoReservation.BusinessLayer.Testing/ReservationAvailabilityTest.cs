@@ -17,7 +17,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioOkay01Test()
+        public void ScenarioOkay01Test()
         {
             //| ---Date 1--- |
             //               | ---Date 2--- |
@@ -30,7 +30,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioOkay02Test()
+        public void ScenarioOkay02Test()
         {
             //| ---Date 1--- |
             //                 | ---Date 2--- |
@@ -43,7 +43,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioOkay03Test()
+        public void ScenarioOkay03Test()
         {
             //                | ---Date 1--- |
             //| ---Date 2-- - |
@@ -56,7 +56,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioOkay04Test()
+        public void ScenarioOkay04Test()
         {
             //                | ---Date 1--- |
             //| ---Date 2--- |
@@ -69,7 +69,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioNotOkay01Test()
+        public void ScenarioNotOkay01Test()
         {
             //| ---Date 1--- |
             //    | ---Date 2--- |
@@ -83,7 +83,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioNotOkay02Test()
+        public void ScenarioNotOkay02Test()
         {
             //    | ---Date 1--- |
             //| ---Date 2--- |
@@ -97,7 +97,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioNotOkay03Test()
+        public void ScenarioNotOkay03Test()
         {
             //| ---Date 1--- |
             //| --------Date 2-------- |
@@ -111,7 +111,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioNotOkay04Test()
+        public void ScenarioNotOkay04Test()
         {
             //| --------Date 1-------- |
             //| ---Date 2--- |
@@ -125,7 +125,7 @@ namespace AutoReservation.BusinessLayer.Testing
         }
 
         [Fact]
-        public async Task ScenarioNotOkay05Test()
+        public void ScenarioNotOkay05Test()
         {
 
             //| ---Date 1--- |

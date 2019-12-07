@@ -22,14 +22,14 @@ namespace AutoReservation.Service.Grpc.Testing
 
 
         [Fact]
-        public async Task GetAutosTest()
+        public void GetAutosTest()
         {
             AutoDTOList result = _target.ReadAllAutos(new Empty());
             Assert.Equal(4, result.Autos.Count);
         }
 
         [Fact]
-        public async Task GetAutoByIdTest()
+        public void GetAutoByIdTest()
         {
             AutoDTO newAuto = generateExampleAuto();
             AutoIdentifier insertedID = _target.InsertAuto(newAuto);
@@ -55,7 +55,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task InsertAutoTest()
+        public void InsertAutoTest()
         {
             AutoDTO newAuto = generateExampleAuto();
             _target.InsertAuto(newAuto);
@@ -65,7 +65,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task DeleteAutoTest()
+        public void DeleteAutoTest()
         {
             AutoDTO newAuto = generateExampleAuto();
             AutoIdentifier insertedId = _target.InsertAuto(newAuto);
@@ -79,7 +79,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task UpdateAutoTest()
+        public void UpdateAutoTest()
         {
             AutoDTO newAuto = generateExampleAuto();
             AutoIdentifier insertedID = _target.InsertAuto(newAuto);
@@ -96,7 +96,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task UpdateAutoWithOptimisticConcurrencyTest()
+        public void UpdateAutoWithOptimisticConcurrencyTest()
         {
             AutoDTO newAuto = generateExampleAuto();
             AutoIdentifier insertedID = _target.InsertAuto(newAuto);

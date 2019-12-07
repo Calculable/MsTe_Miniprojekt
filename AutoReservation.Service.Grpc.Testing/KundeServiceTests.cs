@@ -19,14 +19,14 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task GetKundenTest()
+        public void GetKundenTest()
         {
             KundeDTOList result = _target.ReadAllKunden(new Empty());
             Assert.Equal(4, result.Kunden.Count);
         }
 
         [Fact]
-        public async Task GetKundeByIdTest()
+        public void GetKundeByIdTest()
         { 
             KundeDTO newKunde = generateExampleKunde();
             KundeIdentifier insertedID = _target.InsertKunde(newKunde);
@@ -38,7 +38,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task GetKundeByIdWithIllegalIdTest()
+        public void GetKundeByIdWithIllegalIdTest()
         {
             int illegalId = 999;
 
@@ -50,7 +50,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task InsertKundeTest()
+        public void InsertKundeTest()
         {
             KundeDTO newKunde = generateExampleKunde();
             _target.InsertKunde(newKunde);
@@ -60,7 +60,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task DeleteKundeTest()
+        public void DeleteKundeTest()
         {
             KundeDTO newKunde = generateExampleKunde();
             KundeIdentifier insertedId = _target.InsertKunde(newKunde);
@@ -74,7 +74,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task UpdateKundeTest()
+        public void UpdateKundeTest()
         {
             KundeDTO newKunde = generateExampleKunde();
             KundeIdentifier insertedID = _target.InsertKunde(newKunde);
@@ -91,7 +91,7 @@ namespace AutoReservation.Service.Grpc.Testing
         }
 
         [Fact]
-        public async Task UpdateKundeWithOptimisticConcurrencyTest()
+        public void UpdateKundeWithOptimisticConcurrencyTest()
         {
             KundeDTO newKunde = generateExampleKunde();
             KundeIdentifier insertedID = _target.InsertKunde(newKunde);
