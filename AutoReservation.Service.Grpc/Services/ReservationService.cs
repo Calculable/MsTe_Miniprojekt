@@ -34,14 +34,6 @@ namespace AutoReservation.Service.Grpc.Services
             {
                 throw new RpcException(new Status(StatusCode.Aborted, "Reservation could not be deleted because of a concurrency exception"));
             }
-            catch (InvalidDateRangeException exception)
-            {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "The provided date-range for the reservation is not valid"));
-            }
-            catch (AutoUnavailableException exception)
-            {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "The requested Auto is no available at the given date-range"));
-            }
             catch (DbUpdateException)
             {
                 throw new RpcException(new Status(StatusCode.Unknown, "An exception occured while deleting Reservation"));
@@ -58,6 +50,14 @@ namespace AutoReservation.Service.Grpc.Services
             try
             {
                 newId = ReservationManager.insert(ReservationEntity);
+            }
+            catch (InvalidDateRangeException)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The provided date-range for the reservation is not valid"));
+            }
+            catch (AutoUnavailableException)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "The requested Auto is no available at the given date-range"));
             }
             catch (DbUpdateException)
             {
@@ -113,7 +113,7 @@ namespace AutoReservation.Service.Grpc.Services
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "The provided date-range for the reservation is not valid"));
             }
-            catch (AutoUnavailableException exception)
+            catch (AutoUnavailableException)
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "The requested Auto is no available at the given date-range"));
             }
@@ -126,6 +126,16 @@ namespace AutoReservation.Service.Grpc.Services
             reservationIdentifier.ReservationsNr = insertedID;
 
             return Task.FromResult(reservationIdentifier);
+        }
+
+        public override Task<CarAvailableResult> IsCarAvailable(ReservationDTO reservationDTO, ServerCallContext context)
+        {
+            Reservation ReservationEntity = DtoConverter.ConvertToEntity(reservationDTO);
+            ReservationManager ReservationManager = new ReservationManager();
+
+            CarAvailableResult carAvailableResult = new CarAvailableResult();
+            carAvailableResult.CarAvailable = ReservationManager.IsCarAvailable(ReservationEntity); 
+            return Task.FromResult(carAvailableResult);
         }
     }    
 }

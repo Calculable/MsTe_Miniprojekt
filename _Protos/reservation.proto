@@ -26,6 +26,9 @@ service ReservationService {
 
 	rpc DeleteReservation (ReservationDTO)
 		returns (google.protobuf.Empty);
+
+	rpc IsCarAvailable (ReservationDTO)
+		returns (CarAvailableResult);
 }
 
 
@@ -46,5 +49,9 @@ message ReservationDTO {
 
 message ReservationDTOList {
 	repeated ReservationDTO reservationen = 1;
+}
+
+message CarAvailableResult {
+	bool carAvailable = 1;
 }
 

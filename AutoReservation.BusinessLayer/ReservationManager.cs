@@ -103,25 +103,30 @@ namespace AutoReservation.BusinessLayer
 
         private void assertCarIsAvaliable(Reservation currentReservation)
         {
-
-            
-                using (AutoReservationContext autoReservationContext = new AutoReservationContext())
-                {
-                   int amountOfOverlappingReservations = autoReservationContext
-                   .Reservationen
-                   .Include(reservation => reservation.Auto)
-                   .Where(reservation => reservation.AutoId == currentReservation.AutoId)
-                   .Where(reservation => reservation.ReservationsNr != currentReservation.ReservationsNr)
-                   .Where(reservation => (reservation.Von > currentReservation.Von && reservation.Von < currentReservation.Bis) || (reservation.Bis > currentReservation.Von && reservation.Bis < currentReservation.Bis) || (reservation.Von == currentReservation.Von))
-                   .Count();
-
-                    if (amountOfOverlappingReservations > 0)
-                    {
-                        throw new AutoUnavailableException("Die Reservierung ist ungültig, da das reservierte Fahrzeug in diesem Zeitrahmen bereits reserviert ist."); 
-                    }
+            if (!IsCarAvailable(currentReservation))
+            {
+                throw new AutoUnavailableException("Die Reservierung ist ungültig, da das reservierte Fahrzeug in diesem Zeitrahmen bereits reserviert ist.");
             }
-            
-           
+        }
+
+        public bool IsCarAvailable(Reservation currentReservation)
+        {
+            using (AutoReservationContext autoReservationContext = new AutoReservationContext())
+            {
+                int amountOfOverlappingReservations = autoReservationContext
+                .Reservationen
+                .Include(reservation => reservation.Auto)
+                .Where(reservation => reservation.AutoId == currentReservation.AutoId)
+                .Where(reservation => reservation.ReservationsNr != currentReservation.ReservationsNr)
+                .Where(reservation => (reservation.Von > currentReservation.Von && reservation.Von < currentReservation.Bis) || (reservation.Bis > currentReservation.Von && reservation.Bis < currentReservation.Bis) || (reservation.Von == currentReservation.Von))
+                .Count();
+
+                if (amountOfOverlappingReservations > 0)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

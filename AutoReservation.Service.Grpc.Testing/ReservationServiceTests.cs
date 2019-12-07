@@ -45,10 +45,13 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public async Task GetReservationByIdWithIllegalIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            int illegalId = 999;
+
+            ReservationIdentifier reservationIdentifier = new ReservationIdentifier();
+            reservationIdentifier.ReservationsNr = illegalId;
+
+            var ex = Assert.Throws<RpcException>(() => _target.ReadReservationForId(reservationIdentifier));
+            Assert.Equal(StatusCode.NotFound, ex.StatusCode);
         }
 
         [Fact]
@@ -95,64 +98,97 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public async Task UpdateReservationWithOptimisticConcurrencyTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation();
+            ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
+
+            ReservationDTO inserted = _target.ReadReservationForId(insertedID);
+            ReservationDTO inserted2 = _target.ReadReservationForId(insertedID);
+
+            inserted.Von = Timestamp.FromDateTime(new DateTime(2020, 03, 02).ToUniversalTime());
+
+            inserted2.Bis = Timestamp.FromDateTime(new DateTime(2020, 03, 04).ToUniversalTime());
+
+            _target.UpdateReservation(inserted);
+
+            var ex = Assert.Throws<RpcException>(() => _target.UpdateReservation(inserted2));
+            Assert.Equal(StatusCode.Aborted, ex.StatusCode);
         }
 
         [Fact]
         public async Task InsertReservationWithInvalidDateRangeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 03), new DateTime(2020, 03, 01));
+
+            var ex = Assert.Throws<RpcException>(() => _target.InsertReservation(newReservation));
+            Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
         }
 
         [Fact]
         public async Task InsertReservationWithAutoNotAvailableTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+
+            ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
+            _target.InsertReservation(newReservation);
+
+            ReservationDTO reservationForUnavailableAuto = generateExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 02));
+
+            var ex = Assert.Throws<RpcException>(() => _target.InsertReservation(reservationForUnavailableAuto));
+            Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
+
         }
 
         [Fact]
         public async Task UpdateReservationWithInvalidDateRangeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
+            ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
+            ReservationDTO inserted = _target.ReadReservationForId(insertedID);
+
+            ReservationDTO newReservation2 = generateExampleReservation(new DateTime(2020, 03, 04), new DateTime(2020, 03, 06));
+            ReservationIdentifier insertedID2 = _target.InsertReservation(newReservation2);
+            ReservationDTO inserted2 = _target.ReadReservationForId(insertedID2);
+
+            inserted2.Von = Timestamp.FromDateTime(new DateTime(2020, 03, 02).ToUniversalTime());
+
+
+            var ex = Assert.Throws<RpcException>(() => _target.UpdateReservation(inserted2));
+            Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
+
         }
 
         [Fact]
         public async Task UpdateReservationWithAutoNotAvailableTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation();
+            ReservationIdentifier insertedID = _target.InsertReservation(newReservation);
+
+            ReservationDTO result = _target.ReadReservationForId(insertedID);
+
+            result.Bis = Timestamp.FromDateTime(new DateTime(2020, 03, 01).ToUniversalTime());
+
+
+            var ex = Assert.Throws<RpcException>(() => _target.UpdateReservation(result));
+            Assert.Equal(StatusCode.InvalidArgument, ex.StatusCode);
         }
 
         [Fact]
         public async Task CheckAvailabilityIsTrueTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
+            _target.InsertReservation(newReservation);
+
+
+            Assert.True(_target.IsCarAvailable(generateExampleReservation(new DateTime(2020, 03, 04), new DateTime(2020, 03, 04))).CarAvailable);
         }
 
         [Fact]
         public async Task CheckAvailabilityIsFalseTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            ReservationDTO newReservation = generateExampleReservation(new DateTime(2020, 03, 01), new DateTime(2020, 03, 03));
+            _target.InsertReservation(newReservation);
+
+
+            Assert.True(_target.IsCarAvailable(generateExampleReservation(new DateTime(2020, 03, 02), new DateTime(2020, 03, 02))).CarAvailable);
         }
 
         private ReservationDTO generateExampleReservation()

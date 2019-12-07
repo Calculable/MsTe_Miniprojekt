@@ -30,7 +30,7 @@ namespace AutoReservation.Service.Grpc.Services
                 kundeManager.delete(kundeEntity);
                 return Task.FromResult(new Empty());
             }
-            catch (OptimisticConcurrencyException<Kunde> exception)
+            catch (OptimisticConcurrencyException<Kunde>)
             {
                 throw new RpcException(new Status(StatusCode.Aborted, "Kunde could not be deleted because of a concurrency exception"));
             }
@@ -102,11 +102,11 @@ namespace AutoReservation.Service.Grpc.Services
             {
                 newKundeId = KundeManager.update(KundeEntity);
             }
-            catch (OptimisticConcurrencyException<Kunde> exception)
+            catch (OptimisticConcurrencyException<Kunde>)
             {
-                throw new ServiceException(exception);
+                throw new RpcException(new Status(StatusCode.Aborted, "Could not update Kunde because a concurrency-exception occured"));
             }
-            catch (DbUpdateException exception)
+            catch (DbUpdateException)
             {
                 throw new RpcException(new Status(StatusCode.Unknown, "An exception occured while updating Kunde"));
             }

@@ -40,10 +40,13 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public async Task GetKundeByIdWithIllegalIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            int illegalId = 999;
+
+            KundeIdentifier kundeIdentifier = new KundeIdentifier();
+            kundeIdentifier.Id = illegalId;
+
+            var ex = Assert.Throws<RpcException>(() => _target.ReadKundeForId(kundeIdentifier));
+            Assert.Equal(StatusCode.NotFound, ex.StatusCode);
         }
 
         [Fact]
@@ -91,10 +94,20 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public async Task UpdateKundeWithOptimisticConcurrencyTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+            KundeDTO newKunde = generateExampleKunde();
+            KundeIdentifier insertedID = _target.InsertKunde(newKunde);
+
+            KundeDTO inserted = _target.ReadKundeForId(insertedID);
+            KundeDTO inserted2 = _target.ReadKundeForId(insertedID);
+
+            inserted.Nachname = "Anderer Nachname";
+            inserted2.Vorname = "Anderer Vorname";
+
+            _target.UpdateKunde(inserted);
+
+
+            var ex = Assert.Throws<RpcException>(() => _target.UpdateKunde(inserted2));
+            Assert.Equal(StatusCode.Aborted, ex.StatusCode);
         }
 
         private KundeDTO generateExampleKunde()

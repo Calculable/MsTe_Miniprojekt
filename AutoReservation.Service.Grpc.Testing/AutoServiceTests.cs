@@ -47,16 +47,13 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public void GetAutoByIdWithIllegalIdTest()
         {
-            /* int illegalId = 999;
+            int illegalId = 999;
 
              AutoIdentifier autoIdentifier = new AutoIdentifier();
              autoIdentifier.Id = illegalId;
 
-
-             var ex = Assert.Throws<ServiceException>(() => _target.ReadAutoForId(autoIdentifier));
-             Assert.True(ex.InnerException is InvalidOperationException);*/
-
-            throw new NotImplementedException("Test not implemented.");
+             var ex = Assert.Throws<RpcException>(() => _target.ReadAutoForId(autoIdentifier));
+             Assert.Equal(StatusCode.NotFound, ex.StatusCode);
 
         }
 
@@ -105,10 +102,21 @@ namespace AutoReservation.Service.Grpc.Testing
         [Fact]
         public async Task UpdateAutoWithOptimisticConcurrencyTest()
         {
-            throw new NotImplementedException("Test not implemented.");
-            // arrange
-            // act
-            // assert
+
+            AutoDTO newAuto = generateExampleAuto();
+            AutoIdentifier insertedID = _target.InsertAuto(newAuto);
+
+            AutoDTO inserted = _target.ReadAutoForId(insertedID);
+            AutoDTO inserted2 = _target.ReadAutoForId(insertedID);
+
+            inserted.Marke = "Andere Testmarke";
+            inserted2.Tagestarif = 20;
+
+            _target.UpdateAuto(inserted);
+
+         
+            var ex = Assert.Throws<RpcException>(() => _target.UpdateAuto(inserted2));
+            Assert.Equal(StatusCode.Aborted, ex.StatusCode);
         }
 
         private AutoDTO generateExampleAuto()
