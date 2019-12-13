@@ -61,11 +61,11 @@ namespace AutoReservation.Service.Grpc.Services
             return Task.FromResult(new AutoIdentifier(newAutoIdentifier));
         }
 
-        public override Task<AutoDTOList> ReadAllAutos(Empty request, ServerCallContext context)
+        public override async Task<AutoDTOList> ReadAllAutos(Empty request, ServerCallContext context)
         {
             AutoManager autoManager = new AutoManager();
-            Task<List<Auto>> allAuto;
-             allAuto = autoManager.GetAll();
+            
+            var allAuto = await autoManager.GetAll();
             return DtoConverter.ConvertToDtos(allAuto);   
         }
 
