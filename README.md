@@ -1,6 +1,8 @@
-# Uebung .NET: Autoverwaltung
+# Übung .NET: Autoverwaltung
 
-Uebungsprojekt für das Modul .NET / Microsoft Technologies an der Fachhochschule OST
+Übungsprojekt für das Modul .NET / Microsoft Technologies an der Fachhochschule OST
+
+Vorlage: Manuel Bauer, Dozent
 
 
 
